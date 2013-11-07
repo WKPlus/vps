@@ -2,6 +2,8 @@
 
 WEB_ROOT_DIR="/var/www/html"
 
+httpd_localize_str="LoadModule php5_module modules/libphp5.so\n<FilesMatch \.php$>\n\tSetHandler application/x-httpd-php\n</FilesMatch>"
+
 function pull_specified_file
 {
     if [ $# -lt 3 ];then
@@ -33,12 +35,22 @@ function install_tools
 
 function init_httpd
 {
+    echo -e ${httpd_localize_str} >> /etc/httpd/conf/httpd.conf
+    service httpd start
+    return 0
+}
+
+function init_mysql
+{
+    service mysqld start
+    mysql -uroot < add_user.sql
+    cd ${WEB_ROOT_DIR} && mysql -uwordpress -pwordpress wordpress < wordpress.sql
+    
     return 0
 }
 
 function backup()
 {
-    git clone git@github.com:zhaoqifa/vps.git
     pushd .
     cd ${WEB_ROOT_DIR} && mysqldump -uwordpress -pwordpress wordpress > wordpress.sql && tar -zcvf blog.tgz blog/ index.php wordpress.sql
     popd
@@ -50,12 +62,10 @@ function init
 {
     install_tools
 
-    git clone https://github.com/zhaoqifa/vps.git
-    if [ $? -ne 0 ];then
-        return 1
-    fi
     cp vps/vim/vimrc ~/.vimrc
-    cp blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
+    cp data/blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
+    init_mysql
+    init_httpd
 }
 
 function main
