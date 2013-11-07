@@ -37,7 +37,6 @@ function init_httpd
 {
     echo -e ${httpd_localize_str} >> /etc/httpd/conf/httpd.conf
     service httpd start
-    return 0
 }
 
 function init_mysql
@@ -45,8 +44,11 @@ function init_mysql
     service mysqld start
     mysql -uroot < add_user.sql
     cd ${WEB_ROOT_DIR} && mysql -uwordpress -pwordpress wordpress < wordpress.sql
-    
-    return 0
+}
+
+function init_php
+{
+    sed -i '1a\extension=mysql.so' /etc/php.ini
 }
 
 function backup()
@@ -65,6 +67,7 @@ function init
     cp vps/vim/vimrc ~/.vimrc
     cp /bin/vi /bin/vi.bak && cp /usr/bin/vim /bin/vi
     cp data/blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
+    init_php
     init_mysql
     init_httpd
 }
