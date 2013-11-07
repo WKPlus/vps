@@ -64,7 +64,7 @@ function main
         echo "You must specified a operation, such as init or backup"
     elif [ "$1" == "init" ];then
         init
-    elif [ "$1" == "backup"]
+    elif [ "$1" == "backup"];then
         backup
     else
         echo "Unrecognized operation: $1"
