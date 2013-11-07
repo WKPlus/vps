@@ -63,6 +63,7 @@ function init
     install_tools
 
     cp vps/vim/vimrc ~/.vimrc
+    cp /bin/vi /bin/vi.bak && cp /usr/bin/vim /bin/vi
     cp data/blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
     init_mysql
     init_httpd
