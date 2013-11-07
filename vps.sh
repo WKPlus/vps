@@ -1,5 +1,6 @@
 #!/bin/bash
 
+CUR_DIR=$(cd $(dirname $0) && pwd -P)
 WEB_ROOT_DIR="/var/www/html"
 
 httpd_localize_str="LoadModule php5_module modules/libphp5.so\n<FilesMatch \.php$>\n\tSetHandler application/x-httpd-php\n</FilesMatch>"
@@ -43,7 +44,7 @@ function init_httpd
 function init_mysql
 {
     service mysqld restart
-    mysql -uroot < add_user.sql
+    cd ${CUR_DIR} && mysql -uroot < add_user.sql
     cd ${WEB_ROOT_DIR} && mysql -uwordpress -pwordpress wordpress < wordpress.sql
 }
 
