@@ -35,7 +35,7 @@ function init_httpd
 {
 }
 
-function update_git()
+function backup()
 {
     git clone git@github.com:zhaoqifa/vps.git
     pushd .
@@ -45,7 +45,7 @@ function update_git()
     cd vps && git add data/blog.tgz && git commit -m "update blog data" && git push
 }
 
-function init_vps
+function init
 {
     install_tools
 
@@ -57,3 +57,24 @@ function init_vps
     cp blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
 }
 
+function main
+{
+    if [ $# -lt 1 ];then
+        echo "You must specified a operation, such as init or backup"
+    elif [ "$1" == "init" ];then
+        init
+    elif [ "$1" == "backup"]
+        backup
+    else
+        echo "Unrecognized operation: $1"
+    fi
+}
+
+function help
+{
+    cat << EOF
+Usage: sh $0 operation
+EOF
+    exit 0
+}
+main $@
