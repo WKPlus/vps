@@ -33,6 +33,7 @@ function install_tools
 
 function init_httpd
 {
+    return 0
 }
 
 function backup()
