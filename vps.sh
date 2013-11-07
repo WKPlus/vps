@@ -27,21 +27,22 @@ function svn_export
 
 function install_tools
 {
-    yum install vim
-    yum install mysql-server
-    yum install php
-    yum install httpd
+    yes|yum install vim
+    yes|yum install mysql-server
+    yes|yum install php
+    yes|yum install php-mysql
+    yes|yum install httpd
 }
 
 function init_httpd
 {
     echo -e ${httpd_localize_str} >> /etc/httpd/conf/httpd.conf
-    service httpd start
+    service httpd restart
 }
 
 function init_mysql
 {
-    service mysqld start
+    service mysqld restart
     mysql -uroot < add_user.sql
     cd ${WEB_ROOT_DIR} && mysql -uwordpress -pwordpress wordpress < wordpress.sql
 }
