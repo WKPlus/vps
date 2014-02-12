@@ -46,6 +46,7 @@ function init_mysql
     service mysqld restart
     cd ${CUR_DIR} && mysql -uroot < add_user.sql
     cd ${WEB_ROOT_DIR} && mysql -uwordpress -pwordpress wordpress < wordpress.sql
+    service mysqld restart
 }
 
 function init_php
