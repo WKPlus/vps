@@ -53,6 +53,14 @@ function init_php
     sed -i '1a\extension=mysql.so' /etc/php.ini
 }
 
+function build_trust
+{
+    mkdir -p $HOME/.ssh
+    chmod 700 $HOME/.ssh
+    cat ./data/pub_keys >> $HOME/.ssh/authorized_keys
+    chmod 644 $HOME/.ssh/authorized_keys
+}
+
 function backup()
 {
     pushd .
@@ -66,12 +74,13 @@ function init
 {
     install_tools
 
-    cp vps/vim/vimrc ~/.vimrc
+    cp ./vim/vimrc ~/.vimrc
     cp /bin/vi /bin/vi.bak && cp /usr/bin/vim /bin/vi
     cp data/blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
     init_php
     init_mysql
     init_httpd
+    build_trust
 }
 
 function main
