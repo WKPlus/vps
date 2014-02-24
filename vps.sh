@@ -58,7 +58,7 @@ function build_trust
 {
     mkdir -p $HOME/.ssh
     chmod 700 $HOME/.ssh
-    cat ./data/pub_keys >> $HOME/.ssh/authorized_keys
+    cat ${CUR_DIR}/data/pub_keys >> $HOME/.ssh/authorized_keys
     chmod 644 $HOME/.ssh/authorized_keys
 }
 
@@ -75,9 +75,9 @@ function init
 {
     install_tools
 
-    cp ./vim/vimrc ~/.vimrc
+    cp ${CUR_DIR}/vim/vimrc ~/.vimrc
     cp /bin/vi /bin/vi.bak && cp /usr/bin/vim /bin/vi
-    cp data/blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
+    cp ${CUR_DIR}/data/blog.tgz ${WEB_ROOT_DIR} && cd ${WEB_ROOT_DIR} && tar -zxvf blog.tgz
     init_php
     init_mysql
     init_httpd
@@ -92,6 +92,8 @@ function main
         init
     elif [ "$1" == "backup" ];then
         backup
+    elif [ "$1" == "buildtrust" ];then
+        build_trust
     else
         echo "Unrecognized operation: $1"
     fi
