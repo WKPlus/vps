@@ -67,8 +67,8 @@ function backup()
     pushd .
     cd ${WEB_ROOT_DIR} && mysqldump -uwordpress -pwordpress wordpress > wordpress.sql && tar -zcvf blog.tgz blog/ index.php wordpress.sql
     popd
-    mv ${WEB_ROOT_DIR}/blog.tgz vps/data/
-    cd vps && git add data/blog.tgz && git commit -m "update blog data" && git push
+    mv ${WEB_ROOT_DIR}/blog.tgz ${CUR_DIR}/data/
+    cd ${CUR_DIR} && git add data/blog.tgz && git commit -m "update blog data" && git push
 }
 
 function init
