@@ -28,11 +28,13 @@ function svn_export
 
 function install_tools
 {
-    yes|yum install vim
-    yes|yum install mysql-server
-    yes|yum install php
-    yes|yum install php-mysql
-    yes|yum install httpd
+    yum -y install vim
+    yum -y install mysql-server
+    yum -y install php
+    yum -y install php-mysql
+    yum -y install httpd
+    yum -y install wget
+    yum -y install gcc-c++
 }
 
 function init_httpd
@@ -60,6 +62,15 @@ function build_trust
     chmod 700 $HOME/.ssh
     cat ${CUR_DIR}/data/pub_keys >> $HOME/.ssh/authorized_keys
     chmod 644 $HOME/.ssh/authorized_keys
+}
+
+function init_kingate
+{
+    wget http://sourceforge.net/projects/kingate/files/latest/download -O kingate.tar.gz
+    src_dir=$(dirname $(tar zxvf kingate.tar.gz|tail -1))
+    cd ${src_dir} && ./configure && make && make install
+    sed -i 's/ftp on/ftp off/' "/usr/local/etc/kingate.conf"
+    /usr/local/bin/kingate
 }
 
 function backup()
