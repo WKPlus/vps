@@ -72,6 +72,11 @@ function init_kingate
     sed -i 's/ftp on/ftp off/' "/usr/local/etc/kingate.conf"
     /usr/local/bin/kingate
 }
+function init_pip
+{
+    wget https://bootstrap.pypa.io/get-pip.py 
+    python get_pip.py
+}
 
 function backup()
 {
@@ -93,6 +98,7 @@ function init
     init_mysql
     init_httpd
     build_trust
+    init_pip
 }
 
 function main
